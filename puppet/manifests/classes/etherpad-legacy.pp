@@ -29,7 +29,7 @@ class etherpad-legacy {
     }   
 
     package { ["curl", "scala", "openjdk-6-jdk", "libmysql-java",
-               "mysql-server", "openoffice"]:
+               "mysql-server", "openoffice", "firefox", "xvfb"]:
         require => Exec["apt-get-update"],
         ensure => "installed";
     }
