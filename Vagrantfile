@@ -13,8 +13,4 @@ Vagrant::Config.run do |config|
     # enable this to see verbose and debug puppet output
     #puppet.options = "--verbose --debug"
   end
-  Vagrant::Config.run do |config|
-    config.vm.share_folder("etherpad-code", "/home/etherpad/dev/etherpad", "../", :nfs => true)
-  end
-
 end

@@ -10,23 +10,21 @@ INSTALL
 
 2) Install vagrant from http://vagrantup.com/
 
-3) Clone etherpad-lite and add etherpad-vagrant as submodule
+3) Clone etherpad-legacy-vagrant 
 
-$ git clone https://github.com/mozilla/pad.git
-$ cd pad
-$ git submodule add https://github.com/rhelmer/etherpad-legacy-vagrant.git
+$ git clone https://github.com/rhelmer/etherpad-legacy-vagrant.git
 
 4) build VM and provision with puppet
 
-$ cd ./etherpad-vagrant
+$ cd ./etherpad-legacy-vagrant
 $ vagrant up
 
 5) Add 33.33.33.10 to /etc/hosts:
-33.33.33.10	etherpad-legacy
+33.33.33.10	etherpad-legacy.localhost
 
 6) Enjoy your Etherpad environment!
 
-dashboard:      http://etherpad-legacy:9000
+http://etherpad-legacy.locahost:9000
 
 You can modify files directly in the checkout on the host machine.
 Here are some common vagrant operations:
