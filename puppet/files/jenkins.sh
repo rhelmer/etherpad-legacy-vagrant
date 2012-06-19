@@ -1,12 +1,26 @@
 #!/bin/bash
+trap 'sudo kill $(jobs -p); sudo killall -u etherpad java' EXIT
 
-sudo su - etherpad -c "cd /home/etherpad/src/pad && ./bin/run.sh" &
+if [ -f etherpad.log ]
+then
+  rm etherpad.log
+fi
+sudo su - etherpad -c "cd /home/etherpad/src/pad && ./bin/run.sh" 2>&1 | tee etherpad.log &
 
-sleep 30
+while true
+do
+  grep 'HTTP server listening' etherpad.log
+  if [ $? == 0 ]
+  then
+    break
+  else
+    sleep 5
+  fi
+done
 
 Xvfb :0 &
 export DISPLAY=:0
 virtualenv .virtualenv
 source .virtualenv/bin/activate
 pip install selenium
-python etherpad_selenium.py
+python /vagrant/puppet/files/etherpad_selenium.py

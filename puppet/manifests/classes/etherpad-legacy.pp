@@ -30,7 +30,8 @@ class etherpad-legacy {
     }   
 
     package { ["git-core", "curl", "scala", "openjdk-6-jdk", "libmysql-java",
-               "mysql-server", "openoffice.org", "firefox", "xvfb"]:
+               "mysql-server", "openoffice.org", "firefox", "xvfb", "python-virtualenv",
+               "python-pip"]:
         require => Exec["apt-get-update"],
         ensure => "latest";
     }
@@ -45,18 +46,12 @@ class etherpad-legacy {
 
     exec { "/home/etherpad/src/pad/bin/build.sh":
         alias => "build",
-        creates => "/home/etherpad/src/pad",
         user => "etherpad",
         require => Exec["git-clone"];
     }
 
-    exec { "/bin/cd /home/etherpad/src/pad/etherpad && source ../bin/exports.sh && ./bin/rebuildjar.sh":
-        user => "etherpad",
-        require => Exec["build"];
-    }
-
     file { "/home/etherpad/src/pad/etherpad/etc/etherpad.local.properties":
-        owner => etherpad,
+        owner => "etherpad",
         source => "/vagrant/puppet/files/etherpad.local.properties",
         require => Exec["git-clone"];
     }
