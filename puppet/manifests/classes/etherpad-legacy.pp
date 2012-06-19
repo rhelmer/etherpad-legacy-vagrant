@@ -1,8 +1,4 @@
 class etherpad-legacy {
-    file { "/home/vagrant/jenkins.sh":
-        owner => vagrant,
-        source => '/vagrant/puppet/files/jenkins.sh';
-    }
 
     file { "/home/etherpad":
         require => User[etherpad],
@@ -40,15 +36,29 @@ class etherpad-legacy {
     }
 
     exec { "/usr/bin/git clone git://github.com/mozilla/pad.git":
+        alias => "git-clone",
         creates => "/home/etherpad/src/pad",
         user => "etherpad",
         require => [File["/home/etherpad/src"], Package["git-core"]],
         cwd => "/home/etherpad/src";
     }
 
-    file { "/home/etherpad/src/pad/etherpad/etc/etherpad.localdev.properties":
+    exec { "/home/etherpad/src/pad/bin/build.sh":
+        alias => "build",
+        creates => "/home/etherpad/src/pad",
+        user => "etherpad",
+        require => Exec["git-clone"];
+    }
+
+    exec { "/bin/cd /home/etherpad/src/pad/etherpad && source ../bin/exports.sh && ./bin/rebuildjar.sh":
+        user => "etherpad",
+        require => Exec["build"];
+    }
+
+    file { "/home/etherpad/src/pad/etherpad/etc/etherpad.local.properties":
         owner => etherpad,
-        source => '/vagrant/puppet/files/etherpad.localdev.properties';
+        source => "/vagrant/puppet/files/etherpad.local.properties",
+        require => Exec["git-clone"];
     }
 
     exec { "/bin/echo 'CREATE DATABASE IF NOT EXISTS etherpad' | /usr/bin/mysql":
