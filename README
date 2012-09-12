@@ -22,9 +22,16 @@ $ vagrant up
 5) Add 33.33.33.10 to /etc/hosts:
 33.33.33.10	etherpad-legacy.localhost
 
-6) Enjoy your Etherpad environment!
+6) Start etherpad inside the VM:
 
-http://etherpad-legacy.locahost:9000
+$ vagrant ssh
+$ sudo su - etherpad
+$ cd ~/src/pad
+$ ./bin/run.sh
+
+7) Enjoy your Etherpad environment!
+
+http://etherpad-legacy.localhost:9000
 
 You can modify files directly in the checkout on the host machine.
 Here are some common vagrant operations:
